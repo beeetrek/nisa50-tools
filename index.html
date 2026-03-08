@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>50代新NISA 購入者限定ツール</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+
+        :root {
+            --bg: #0f1923;
+            --card: #182533;
+            --accent-gold: #d4a94a;
+            --accent-blue: #4ea8de;
+            --text: #e8ecf1;
+            --text-muted: #8899aa;
+            --border: #253545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portal {
+            max-width: 480px;
+            width: 100%;
+            padding: 24px;
+        }
+
+        .portal-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .portal-header .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-gold), #b8860b);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .portal-header h1 {
+            font-size: 22px;
+            font-weight: 900;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .portal-header p {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .tool-card {
+            background: var(--card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            margin-bottom: 16px;
+            text-decoration: none;
+            color: var(--text);
+            display: block;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .tool-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .tool-card h2 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .tool-card .arrow {
+            margin-left: auto;
+            color: var(--accent-blue);
+            font-size: 18px;
+        }
+
+        .coming {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .coming .arrow {
+            display: none;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .tag-ready {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+
+        .tag-soon {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="portal">
+        <div class="portal-header">
+            <div class="badge">購入者限定特典</div>
+            <h1>50代新NISA<br>「やってはいけない」大全</h1>
+            <p>ツールポータル</p>
+        </div>
+
+        <a href="./portfolio/" class="tool-card">
+            <h2>📊 ポートフォリオ設計シート <span class="tag tag-ready">公開中</span> <span class="arrow">→</span></h2>
+            <p>9項目を入力するだけで、あなたに最適な投資パターンと配分を自動診断します。</p>
+        </a>
+
+        <a href="./ideco/" class="tool-card coming">
+            <h2>🧮 iDeCo×退職金 受取シミュレーター <span class="tag tag-soon">準備中</span></h2>
+            <p>退職金とiDeCoの受取順序を変えるだけで、税金が数十万円変わります。3パターンを自動比較。</p>
+        </a>
+
+        <a href="./checklist/" class="tool-card coming">
+            <h2>🛡️ 暴落対応チェックリスト <span class="tag tag-soon">準備中</span></h2>
+            <p>暴落が来たときに見るべきチェックリスト。印刷して冷蔵庫に貼ってください。</p>
+        </a>
+
+        <div class="footer">
+            © 2026 うと式 ── note記事購入者限定
+        </div>
+    </div>
+</body>
+
+</html>
