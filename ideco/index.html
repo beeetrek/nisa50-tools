@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>【BeeeTrek】iDeCo×退職金 受取シミュレーター</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+
+        :root {
+            --bg: #0f1923;
+            --card: #182533;
+            --accent-blue: #4ea8de;
+            --accent-green: #2ecc71;
+            --accent-orange: #f39c12;
+            --accent-red: #e74c3c;
+            --accent-gold: #d4a94a;
+            --text: #e8ecf1;
+            --text-muted: #8899aa;
+            --input-bg: #1a2d3e;
+            --input-border: #2a4560;
+            --input-focus: #4ea8de;
+            --border: #253545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Gate */
+        #gate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        #gate .gate-box {
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #gate .gate-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-gold), #b8860b);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        #gate h1 {
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        #gate .gate-sub {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 32px;
+        }
+
+        #gate .gate-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            color: var(--text);
+            font-size: 16px;
+            font-family: inherit;
+            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        #gate .gate-input:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(78, 168, 222, 0.15);
+        }
+
+        #gate .gate-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-blue), #2471a3);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        #gate .gate-btn:hover {
+            transform: scale(1.02);
+        }
+
+        #gate .gate-error {
+            color: var(--accent-red);
+            font-size: 13px;
+            margin-top: 12px;
+            min-height: 20px;
+        }
+
+        #gate .gate-hint {
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-top: 24px;
+            line-height: 1.5;
+        }
+
+        #app {
+            display: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 16px 80px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 48px 0 32px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-gold), #b8860b);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 900;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        .section-title .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .input-group {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            transition: border-color 0.2s;
+        }
+
+        .input-group:hover {
+            border-color: var(--input-focus);
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .input-group .hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-row input {
+            flex: 1;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--text);
+            font-size: 18px;
+            font-family: inherit;
+            font-weight: 700;
+            transition: border-color 0.2s;
+            appearance: textfield;
+            -moz-appearance: textfield;
+        }
+
+        .input-row input::-webkit-inner-spin-button,
+        .input-row input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .input-row input:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(78, 168, 222, 0.15);
+        }
+
+        .input-row .unit {
+            font-size: 14px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            min-width: 30px;
+        }
+
+        .result-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .result-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table td:first-child {
+            color: var(--text-muted);
+            width: 60%;
+        }
+
+        .data-table td:last-child {
+            text-align: right;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .data-table .highlight td:last-child {
+            color: var(--accent-green);
+            font-size: 18px;
+        }
+
+        .data-table .total-row td {
+            border-top: 2px solid var(--accent-blue);
+            font-weight: 900;
+        }
+
+        .data-table .total-row td:last-child {
+            font-size: 20px;
+        }
+
+        /* Pattern tabs */
+        .pattern-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .pattern-tab {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            background: var(--card);
+            border: 2px solid var(--border);
+            cursor: default;
+            transition: all 0.2s;
+        }
+
+        .pattern-tab .tab-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .pattern-tab .tab-amount {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .pattern-tab .tab-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .pattern-tab.best {
+            border-color: var(--accent-green);
+            background: rgba(46, 204, 113, 0.08);
+        }
+
+        .pattern-tab.best .tab-amount {
+            color: var(--accent-green);
+        }
+
+        .pattern-tab.best .tab-label {
+            color: var(--accent-green);
+        }
+
+        /* Winner card */
+        .winner-card {
+            background: linear-gradient(135deg, #1a3a4a, #0f2533);
+            border: 1px solid var(--accent-gold);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .winner-card .crown {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .winner-card .winner-text {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--accent-gold);
+            margin-bottom: 4px;
+        }
+
+        .winner-card .winner-sub {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .winner-card .saving {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--accent-green);
+            margin: 12px 0 4px;
+        }
+
+        .winner-card .saving-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Notes */
+        .note-box {
+            background: rgba(243, 156, 18, 0.08);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--accent-orange);
+            line-height: 1.5;
+        }
+
+        .note-box.red {
+            background: rgba(231, 76, 60, 0.08);
+            border-color: rgba(231, 76, 60, 0.3);
+            color: var(--accent-red);
+        }
+
+        .disclaimer {
+            background: var(--card);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 40px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            border: 1px solid var(--border);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        @media(max-width:600px) {
+            .container {
+                padding: 16px 12px 60px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .pattern-tabs {
+                flex-direction: column;
+            }
+
+            .pattern-tab .tab-amount {
+                font-size: 18px;
+            }
+
+            .winner-card .saving {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Gate -->
+    <div id="gate">
+        <div class="gate-box">
+            <div class="gate-badge">購入者限定特典</div>
+            <h1>パスワードを入力してください</h1>
+            <p class="gate-sub">note記事の有料エリアに記載されたパスワードを入力してください</p>
+            <input type="password" class="gate-input" id="pw" placeholder="パスワード" autocomplete="off"
+                onkeydown="if(event.key==='Enter')unlock()">
+            <button class="gate-btn" onclick="unlock()">ツールを開く</button>
+            <div class="gate-error" id="pwErr"></div>
+            <div class="gate-hint">※ データは端末内でのみ処理され、サーバーには送信されません</div>
+        </div>
+    </div>
+
+    <!-- App -->
+    <div id="app">
+        <div class="container">
+            <div class="header">
+                <div class="badge">購入者限定特典</div>
+                <h1>iDeCo × 退職金<br>受取シミュレーター</h1>
+                <p>受取順序を変えるだけで、税金が数十万円変わる</p>
+            </div>
+
+            <!-- STEP 1 -->
+            <div class="section">
+                <div class="section-title"><span class="step-num">1</span> 基本情報の入力</div>
+                <div class="input-group"><label>① 勤続年数</label>
+                    <div class="hint">現在の会社での勤続年数</div>
+                    <div class="input-row"><input type="number" id="kinzoku" min="1" max="50" placeholder="25"
+                            oninput="calc()"><span class="unit">年</span></div>
+                </div>
+                <div class="input-group"><label>② 退職金の見込み額</label>
+                    <div class="hint">退職一時金の額（企業年金は含めない）</div>
+                    <div class="input-row"><input type="number" id="taishokukin" min="0" placeholder="1500"
+                            oninput="calc()"><span class="unit">万円</span></div>
+                </div>
+                <div class="input-group"><label>③ 退職予定年齢</label>
+                    <div class="hint">60歳・63歳・65歳など</div>
+                    <div class="input-row"><input type="number" id="retireAge" min="55" max="75" placeholder="60"
+                            oninput="calc()"><span class="unit">歳</span></div>
+                </div>
+                <div class="input-group"><label>④ iDeCoの加入年数</label>
+                    <div class="hint">企業型DCからの移換期間含む</div>
+                    <div class="input-row"><input type="number" id="idecoYears" min="1" max="40" placeholder="15"
+                            oninput="calc()"><span class="unit">年</span></div>
+                </div>
+                <div class="input-group"><label>⑤ iDeCo資産の見込み額</label>
+                    <div class="hint">退職時点の見込み（現在残高＋今後の拠出）</div>
+                    <div class="input-row"><input type="number" id="idecoAmt" min="0" placeholder="500"
+                            oninput="calc()"><span class="unit">万円</span></div>
+                </div>
+                <div class="input-group"><label>⑥ 厚生年金の見込み月額</label>
+                    <div class="hint">ねんきん定期便を参照。不明なら「15」</div>
+                    <div class="input-row"><input type="number" id="pension" min="0" placeholder="15"
+                            oninput="calc()"><span class="unit">万円/月</span></div>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="section">
+                <div class="section-title"><span class="step-num">2</span> 退職所得控除の計算</div>
+                <div class="result-card">
+                    <h3>📋 控除額の自動計算</h3>
+                    <table class="data-table">
+                        <tr>
+                            <td>退職金の退職所得控除額</td>
+                            <td id="taishokuDeduction">── 万円</td>
+                        </tr>
+                        <tr>
+                            <td>iDeCoの退職所得控除額</td>
+                            <td id="idecoDeduction">── 万円</td>
+                        </tr>
+                        <tr>
+                            <td>勤続期間とiDeCo加入期間の重複年数</td>
+                            <td id="overlapYears">── 年</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="section">
+                <div class="section-title"><span class="step-num">3</span> 3パターンの税額比較</div>
+
+                <div class="pattern-tabs">
+                    <div class="pattern-tab" id="tabA">
+                        <div class="tab-label">パターンA</div>
+                        <div class="tab-amount" id="tabAmtA">──</div>
+                        <div class="tab-desc">iDeCo先 → 退職金後</div>
+                    </div>
+                    <div class="pattern-tab" id="tabB">
+                        <div class="tab-label">パターンB</div>
+                        <div class="tab-amount" id="tabAmtB">──</div>
+                        <div class="tab-desc">退職金先 → iDeCo後(70歳)</div>
+                    </div>
+                    <div class="pattern-tab" id="tabC">
+                        <div class="tab-label">パターンC</div>
+                        <div class="tab-amount" id="tabAmtC">──</div>
+                        <div class="tab-desc">退職金一時金 + iDeCo年金</div>
+                    </div>
+                </div>
+
+                <!-- Pattern A -->
+                <div class="result-card">
+                    <h3>🅰️ iDeCoを先に受取 → 退職金を後に受取</h3>
+                    <div class="note-box red">⚠️ 2026年〜の「10年ルール」により、退職金の控除額が減額されます</div>
+                    <table class="data-table" style="margin-top:16px;">
+                        <tr>
+                            <td>iDeCo受取時の課税対象額</td>
+                            <td id="a_idecoTaxable">──</td>
+                        </tr>
+                        <tr>
+                            <td>iDeCo受取時の退職所得（×1/2）</td>
+                            <td id="a_idecoIncome">──</td>
+                        </tr>
+                        <tr>
+                            <td>iDeCo受取時の税額</td>
+                            <td id="a_idecoTax">──</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top:16px;border-top:2px dashed var(--border);">退職金の控除額（10年ルール適用後）</td>
+                            <td id="a_taishokuDed">──</td>
+                        </tr>
+                        <tr>
+                            <td>退職金の課税対象額</td>
+                            <td id="a_taishokuTaxable">──</td>
+                        </tr>
+                        <tr>
+                            <td>退職金の退職所得（×1/2）</td>
+                            <td id="a_taishokuIncome">──</td>
+                        </tr>
+                        <tr>
+                            <td>退職金の税額</td>
+                            <td id="a_taishokuTax">──</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>パターンA 合計税額</td>
+                            <td id="a_total">──</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Pattern B -->
+                <div class="result-card">
+                    <h3>🅱️ 退職金を先に受取 → iDeCoを70歳で一時金受取</h3>
+                    <div id="b_interval_note"></div>
+                    <table class="data-table" style="margin-top:16px;">
+                        <tr>
+                            <td>退職金の退職所得控除額（フル適用）</td>
+                            <td id="b_taishokuDed">──</td>
+                        </tr>
+                        <tr>
+                            <td>退職金の課税対象額</td>
+                            <td id="b_taishokuTaxable">──</td>
+                        </tr>
+                        <tr>
+                            <td>退職金の退職所得（×1/2）</td>
+                            <td id="b_taishokuIncome">──</td>
+                        </tr>
+                        <tr>
+                            <td>退職金の税額</td>
+                            <td id="b_taishokuTax">──</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top:16px;border-top:2px dashed var(--border);">iDeCo受取時の退職所得控除額（フル適用）
+                            </td>
+                            <td id="b_idecoDed">──</td>
+                        </tr>
+                        <tr>
+                            <td>iDeCo受取時の課税対象額</td>
+                            <td id="b_idecoTaxable">──</td>
+                        </tr>
+                        <tr>
+                            <td>iDeCo受取時の退職所得（×1/2）</td>
+                            <td id="b_idecoIncome">──</td>
+                        </tr>
+                        <tr>
+                            <td>iDeCo受取時の税額</td>
+                            <td id="b_idecoTax">──</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>パターンB 合計税額</td>
+                            <td id="b_total">──</td>
+                        </tr>
+                    </table>
+                    <div class="note-box">⚠️ 70歳までiDeCo資産を運用し続けるリスクがあります（市場変動の影響を受けます）</div>
+                </div>
+
+                <!-- Pattern C -->
+                <div class="result-card">
+                    <h3>🅲 退職金を一時金 ＋ iDeCoを年金形式で受取</h3>
+                    <table class="data-table">
+                        <tr>
+                            <td>退職金の税額（パターンBと同計算）</td>
+                            <td id="c_taishokuTax">──</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top:16px;border-top:2px dashed var(--border);">iDeCoの年間受取額（10年で受取）</td>
+                            <td id="c_idecoAnnual">──</td>
+                        </tr>
+                        <tr>
+                            <td>厚生年金 + iDeCo年金の年間合計</td>
+                            <td id="c_pensionTotal">──</td>
+                        </tr>
+                        <tr>
+                            <td>公的年金等控除額</td>
+                            <td id="c_pensionDeduction">──</td>
+                        </tr>
+                        <tr>
+                            <td>雑所得（年間の課税対象）</td>
+                            <td id="c_zatsuIncome">──</td>
+                        </tr>
+                        <tr>
+                            <td>年間の追加税額</td>
+                            <td id="c_annualTax">──</td>
+                        </tr>
+                        <tr>
+                            <td>10年分の追加税額合計</td>
+                            <td id="c_idecoPeriodTax">──</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>パターンC 合計税額</td>
+                            <td id="c_total">──</td>
+                        </tr>
+                    </table>
+                    <div class="note-box">⚠️ 厚生年金との合算で控除枠を超える場合、毎年課税が発生します</div>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="section">
+                <div class="section-title"><span class="step-num">4</span> 最有利パターンの判定</div>
+                <div class="winner-card" id="winnerCard">
+                    <div class="crown">👑</div>
+                    <div class="winner-text" id="winnerText">入力してください</div>
+                    <div class="winner-sub" id="winnerSub"></div>
+                    <div class="saving" id="winnerSaving"></div>
+                    <div class="saving-label" id="winnerLabel"></div>
+                </div>
+
+                <div class="result-card">
+                    <h3>📊 比較一覧</h3>
+                    <table class="data-table">
+                        <tr>
+                            <td>パターンA（iDeCo先→退職金後）</td>
+                            <td id="cmpA">──</td>
+                        </tr>
+                        <tr>
+                            <td>パターンB（退職金先→iDeCo後 70歳）</td>
+                            <td id="cmpB">──</td>
+                        </tr>
+                        <tr>
+                            <td>パターンC（退職金一時金＋iDeCo年金）</td>
+                            <td id="cmpC">──</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>最大の節税効果</td>
+                            <td id="cmpSave">──</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="result-card">
+                    <h3>⚠️ 判断する前にチェック</h3>
+                    <div style="padding:4px 0;font-size:14px;border-bottom:1px solid var(--border);">
+                        <span style="margin-right:8px;">⬜</span> パターンBの場合、70歳まで運用を続ける覚悟はあるか？
+                    </div>
+                    <div style="padding:10px 0;font-size:14px;border-bottom:1px solid var(--border);">
+                        <span style="margin-right:8px;">⬜</span> パターンCの場合、毎年の年金受取で社会保険料が上がる影響は確認したか？
+                    </div>
+                    <div style="padding:10px 0;font-size:14px;">
+                        <span style="margin-right:8px;">⬜</span> 最終的な判断は税理士・FP等の専門家に確認したか？
+                    </div>
+                </div>
+            </div>
+
+            <div class="disclaimer">
+                <strong>免責事項：</strong>このシミュレーターに表示される税額は概算です。実際の税額は個別の状況（他の所得、控除、扶養状況など）により異なります。このシミュレーターは特定の受取方法を推奨するものではありません。具体的な税金の計算や受取戦略については、税理士・FP等の専門家にご相談ください。制度は改正される可能性があります。最新の制度については国税庁・厚生労働省の公式情報をご確認ください。
+            </div>
+            <div class="footer">50代新NISA「やってはいけない」大全 ── 購入者限定特典<br>© 2026 BeeeTrek</div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Gate =====
+        const PASS_HASH = 'beee50nisa2026';
+        function unlock() { const i = document.getElementById('pw').value.trim(); if (i === PASS_HASH) { document.getElementById('gate').style.display = 'none'; document.getElementById('app').style.display = 'block'; sessionStorage.setItem('nisa50_auth', '1'); } else { document.getElementById('pwErr').textContent = 'パスワードが違います。note記事の有料部分をご確認ください。'; } }
+        if (sessionStorage.getItem('nisa50_auth') === '1') { document.getElementById('gate').style.display = 'none'; document.getElementById('app').style.display = 'block'; }
+
+        // ===== Tax Calc =====
+        function retirementDeduction(years) {
+            if (years <= 0) return 0;
+            if (years <= 20) return Math.max(years * 40, 80);
+            return 800 + 70 * (years - 20);
+        }
+
+        function incomeTax(income) {
+            // income in 万円, returns 万円
+            const y = income * 10000; // 円に変換
+            let tax;
+            if (y <= 1950000) tax = y * 0.05;
+            else if (y <= 3300000) tax = y * 0.1 - 97500;
+            else if (y <= 6950000) tax = y * 0.2 - 427500;
+            else if (y <= 9000000) tax = y * 0.23 - 636000;
+            else if (y <= 18000000) tax = y * 0.33 - 1536000;
+            else if (y <= 40000000) tax = y * 0.4 - 2796000;
+            else tax = y * 0.45 - 4796000;
+            const fukko = tax * 0.021; // 復興特別所得税
+            const jumin = y * 0.1;     // 住民税
+            return Math.max(0, (tax + fukko + jumin) / 10000); // 万円で返す
+        }
+
+        function retirementTax(amount, deduction) {
+            // amount, deduction in 万円
+            const taxable = Math.max(0, amount - deduction);
+            const income = taxable * 0.5; // × 1/2
+            return { taxable, income, tax: incomeTax(income) };
+        }
+
+        function pensionDeduction(annualPension) {
+            // 65歳以上の公的年金等控除（万円単位）
+            const y = annualPension;
+            if (y <= 330) return 110;
+            if (y <= 410) return y * 0.25 + 27.5;
+            if (y <= 770) return y * 0.15 + 68.5;
+            if (y <= 1000) return y * 0.05 + 145.5;
+            return 195.5;
+        }
+
+        function gV(id) { const v = parseFloat(document.getElementById(id).value); return isNaN(v) ? null : v; }
+        function fm(n) { if (n === null || isNaN(n)) return '──'; return Math.round(n).toLocaleString('ja-JP'); }
+
+        function calc() {
+            const kinzoku = gV('kinzoku');
+            const taishokukin = gV('taishokukin');
+            const retireAge = gV('retireAge');
+            const idecoYears = gV('idecoYears');
+            const idecoAmt = gV('idecoAmt');
+            const pension = gV('pension');
+
+            const allFilled = [kinzoku, taishokukin, retireAge, idecoYears, idecoAmt, pension].every(v => v !== null);
+
+            // STEP 2: 控除計算
+            const tDed = kinzoku !== null ? retirementDeduction(kinzoku) : null;
+            const iDed = idecoYears !== null ? retirementDeduction(idecoYears) : null;
+            const overlap = (kinzoku !== null && idecoYears !== null) ? Math.min(kinzoku, idecoYears) : null;
+
+            document.getElementById('taishokuDeduction').textContent = tDed !== null ? fm(tDed) + ' 万円' : '── 万円';
+            document.getElementById('idecoDeduction').textContent = iDed !== null ? fm(iDed) + ' 万円' : '── 万円';
+            document.getElementById('overlapYears').textContent = overlap !== null ? overlap + ' 年' : '── 年';
+
+            if (!allFilled) return;
+
+            // ===== Pattern A: iDeCo先 → 退職金後 =====
+            // iDeCo受取: 退職所得控除をフル適用
+            const aIdeco = retirementTax(idecoAmt, iDed);
+
+            // 退職金受取: 10年ルール適用 → 重複分の控除が減額
+            // 簡略計算: 重複年数分の控除額を差し引く
+            const overlapDeduction = overlap <= 20 ? overlap * 40 : (20 * 40 + (overlap - 20) * 70);
+            const aTaishokuDed = Math.max(0, tDed - overlapDeduction);
+            const aTaishoku = retirementTax(taishokukin, aTaishokuDed);
+            const aTotal = Math.round((aIdeco.tax + aTaishoku.tax) * 10) / 10;
+
+            document.getElementById('a_idecoTaxable').textContent = fm(aIdeco.taxable) + ' 万円';
+            document.getElementById('a_idecoIncome').textContent = fm(aIdeco.income) + ' 万円';
+            document.getElementById('a_idecoTax').textContent = fm(Math.round(aIdeco.tax)) + ' 万円';
+            document.getElementById('a_taishokuDed').textContent = fm(aTaishokuDed) + ' 万円';
+            document.getElementById('a_taishokuTaxable').textContent = fm(aTaishoku.taxable) + ' 万円';
+            document.getElementById('a_taishokuIncome').textContent = fm(aTaishoku.income) + ' 万円';
+            document.getElementById('a_taishokuTax').textContent = fm(Math.round(aTaishoku.tax)) + ' 万円';
+            document.getElementById('a_total').textContent = fm(Math.round(aTotal)) + ' 万円';
+
+            // ===== Pattern B: 退職金先 → iDeCo 70歳 =====
+            const interval = 70 - retireAge;
+            const bTaishoku = retirementTax(taishokukin, tDed);
+            // 5年以上の間隔があれば iDeCo もフル控除
+            const bIdecoDed = interval >= 5 ? iDed : Math.max(0, iDed - overlapDeduction);
+            const bIdeco = retirementTax(idecoAmt, bIdecoDed);
+            const bTotal = Math.round((bTaishoku.tax + bIdeco.tax) * 10) / 10;
+
+            const noteEl = document.getElementById('b_interval_note');
+            if (interval >= 5) {
+                noteEl.innerHTML = '<div class="note-box" style="background:rgba(46,204,113,0.08);border-color:rgba(46,204,113,0.3);color:var(--accent-green);">✅ 退職金受取（' + retireAge + '歳）→ iDeCo（70歳）：間隔 ' + interval + '年 ≧ 5年 → 控除フル適用</div>';
+            } else {
+                noteEl.innerHTML = '<div class="note-box red">⚠️ 退職金受取（' + retireAge + '歳）→ iDeCo（70歳）：間隔 ' + interval + '年 ＜ 5年 → 控除減額あり</div>';
+            }
+
+            document.getElementById('b_taishokuDed').textContent = fm(tDed) + ' 万円';
+            document.getElementById('b_taishokuTaxable').textContent = fm(bTaishoku.taxable) + ' 万円';
+            document.getElementById('b_taishokuIncome').textContent = fm(bTaishoku.income) + ' 万円';
+            document.getElementById('b_taishokuTax').textContent = fm(Math.round(bTaishoku.tax)) + ' 万円';
+            document.getElementById('b_idecoDed').textContent = fm(bIdecoDed) + ' 万円';
+            document.getElementById('b_idecoTaxable').textContent = fm(bIdeco.taxable) + ' 万円';
+            document.getElementById('b_idecoIncome').textContent = fm(bIdeco.income) + ' 万円';
+            document.getElementById('b_idecoTax').textContent = fm(Math.round(bIdeco.tax)) + ' 万円';
+            document.getElementById('b_total').textContent = fm(Math.round(bTotal)) + ' 万円';
+
+            // ===== Pattern C: 退職金一時金 + iDeCo年金（10年） =====
+            const cTaishokuTax = bTaishoku.tax; // 退職金はBと同じ
+            const idecoAnnual = idecoAmt / 10; // 10年で分割
+            const pensionAnnual = pension * 12; // 年額
+            const pensionTotal = pensionAnnual + idecoAnnual;
+            const penDed = pensionDeduction(pensionTotal);
+            const zatsu = Math.max(0, pensionTotal - penDed);
+            // 雑所得の税計算（所得税＋住民税の簡易計算）
+            const zatsuTax = zatsu > 0 ? zatsu * 0.2 : 0; // 所得税10%+住民税10%の概算
+            const cIdecoPeriodTax = zatsuTax * 10; // 10年分
+            const cTotal = Math.round((cTaishokuTax + cIdecoPeriodTax) * 10) / 10;
+
+            document.getElementById('c_taishokuTax').textContent = fm(Math.round(cTaishokuTax)) + ' 万円';
+            document.getElementById('c_idecoAnnual').textContent = fm(idecoAnnual) + ' 万円/年';
+            document.getElementById('c_pensionTotal').textContent = fm(pensionTotal) + ' 万円/年';
+            document.getElementById('c_pensionDeduction').textContent = fm(Math.round(penDed)) + ' 万円';
+            document.getElementById('c_zatsuIncome').textContent = fm(Math.round(zatsu)) + ' 万円/年';
+            document.getElementById('c_annualTax').textContent = fm(Math.round(zatsuTax)) + ' 万円/年';
+            document.getElementById('c_idecoPeriodTax').textContent = fm(Math.round(cIdecoPeriodTax)) + ' 万円';
+            document.getElementById('c_total').textContent = fm(Math.round(cTotal)) + ' 万円';
+
+            // ===== Tabs & Winner =====
+            const taxes = { A: Math.round(aTotal), B: Math.round(bTotal), C: Math.round(cTotal) };
+            document.getElementById('tabAmtA').textContent = fm(taxes.A) + '万円';
+            document.getElementById('tabAmtB').textContent = fm(taxes.B) + '万円';
+            document.getElementById('tabAmtC').textContent = fm(taxes.C) + '万円';
+
+            const min = Math.min(taxes.A, taxes.B, taxes.C);
+            const max = Math.max(taxes.A, taxes.B, taxes.C);
+            document.getElementById('tabA').className = 'pattern-tab' + (taxes.A === min ? ' best' : '');
+            document.getElementById('tabB').className = 'pattern-tab' + (taxes.B === min ? ' best' : '');
+            document.getElementById('tabC').className = 'pattern-tab' + (taxes.C === min ? ' best' : '');
+
+            let winnerName = '';
+            if (taxes.A <= taxes.B && taxes.A <= taxes.C) winnerName = 'パターンA';
+            else if (taxes.B <= taxes.A && taxes.B <= taxes.C) winnerName = 'パターンB';
+            else winnerName = 'パターンC';
+
+            const saving = max - min;
+            document.getElementById('winnerText').textContent = winnerName + ' が最有利';
+            document.getElementById('winnerSub').textContent = {
+                'パターンA': 'iDeCoを先に受取 → 退職金を後に受取',
+                'パターンB': '退職金を先に受取 → iDeCoを70歳で一時金受取',
+                'パターンC': '退職金を一時金 ＋ iDeCoを年金形式で受取'
+            }[winnerName];
+            document.getElementById('winnerSaving').textContent = saving > 0 ? fm(saving) + ' 万円の節税' : '差額なし';
+            document.getElementById('winnerLabel').textContent = saving > 0 ? '最も不利なパターンとの差額' : '';
+
+            document.getElementById('cmpA').textContent = fm(taxes.A) + ' 万円';
+            document.getElementById('cmpB').textContent = fm(taxes.B) + ' 万円';
+            document.getElementById('cmpC').textContent = fm(taxes.C) + ' 万円';
+            document.getElementById('cmpSave').textContent = saving > 0 ? fm(saving) + ' 万円' : '差額なし';
+        }
+    </script>
+</body>
+
+</html>
